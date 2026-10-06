@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+
+.venv/
+__pycache__/
+*.pyc
+
+working/*
+!working/.gitkeep
+
+output/*
+!output/.gitkeep
+
+*.log
