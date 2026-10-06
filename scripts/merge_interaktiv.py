@@ -75,11 +75,18 @@ def normalize_sku(value):
 
 
 def normalize_ean(value):
-    return re.sub(
+    value = re.sub(
         r"[^0-9]",
         "",
         value or ""
     )
+
+    # Valid GTIN lengths:
+    # GTIN-8, UPC/GTIN-12, EAN/GTIN-13, GTIN-14
+    if len(value) not in {8, 12, 13, 14}:
+        return ""
+
+    return value
 
 
 def name_similarity(a, b):
@@ -272,7 +279,8 @@ def build_candidates(products):
 
     #
     # Rule 1:
-    # Unique exact EAN across shops.
+    # Exact EAN across shops, but only with
+    # additional semantic plausibility.
     #
     ean_index = build_index(
         products,
@@ -287,17 +295,78 @@ def build_candidates(products):
         }) < 2:
             continue
 
-        if not valid_cross_source_group(
-            records
-        ):
-            continue
-
-        add_group_pairs(
-            candidates,
+        for left, right in itertools.combinations(
             records,
-            "EAN_EXACT",
-            100,
-        )
+            2
+        ):
+            if (
+                left["source"]
+                == right["source"]
+            ):
+                continue
+
+            similarity = name_similarity(
+                left["name_norm"],
+                right["name_norm"]
+            )
+
+            same_sku = (
+                left["sku_norm"]
+                and left["sku_norm"]
+                == right["sku_norm"]
+            )
+
+            same_manufacturer = (
+                left["manufacturer_norm"]
+                and left["manufacturer_norm"]
+                == right["manufacturer_norm"]
+            )
+
+            plausible = (
+                same_sku
+                or similarity >= 0.55
+                or (
+                    same_manufacturer
+                    and similarity >= 0.40
+                )
+            )
+
+            if plausible:
+                candidates.append({
+                    "left": left["source_key"],
+                    "right": right["source_key"],
+                    "rule": "EAN_EXACT",
+                    "confidence": (
+                        100
+                        if same_sku
+                        or similarity >= 0.75
+                        else 98
+                    ),
+                    "name_similarity": round(
+                        similarity,
+                        4
+                    ),
+                })
+            else:
+                review.append({
+                    "rule": "EAN_EXACT_WEAK_PRODUCT_SIMILARITY",
+                    "left": left["source_key"],
+                    "right": right["source_key"],
+                    "left_sku": left["sku"],
+                    "right_sku": right["sku"],
+                    "left_ean": left["ean"],
+                    "right_ean": right["ean"],
+                    "left_name": left["name"],
+                    "right_name": right["name"],
+                    "name_similarity": round(
+                        similarity,
+                        4
+                    ),
+                    "reason": (
+                        "same EAN but product data "
+                        "looks incompatible"
+                    ),
+                })
 
     #
     # Rule 2:
@@ -397,9 +466,12 @@ def build_candidates(products):
             # recycled/mistyped SKUs.
             #
             if (
-                similarity >= 0.50
-                or same_manufacturer
-                or same_name
+                same_name
+                or similarity >= 0.55
+                or (
+                    same_manufacturer
+                    and similarity >= 0.40
+                )
             ):
                 candidates.append({
                     "left": left["source_key"],
@@ -434,7 +506,8 @@ def build_candidates(products):
 
     #
     # Rule 4:
-    # Exact normalized product name.
+    # Exact product names alone are NOT sufficient
+    # for an automatic merge.
     #
     name_index = build_index(
         products,
@@ -449,17 +522,48 @@ def build_candidates(products):
         }) < 2:
             continue
 
-        if not valid_cross_source_group(
-            records
-        ):
-            continue
-
-        add_group_pairs(
-            candidates,
+        for left, right in itertools.combinations(
             records,
-            "NAME_EXACT",
-            90,
-        )
+            2
+        ):
+            if (
+                left["source"]
+                == right["source"]
+            ):
+                continue
+
+            same_sku = (
+                left["sku_norm"]
+                and left["sku_norm"]
+                == right["sku_norm"]
+            )
+
+            same_ean = (
+                left["ean_norm"]
+                and left["ean_norm"]
+                == right["ean_norm"]
+            )
+
+            # Already covered by stronger rules.
+            if same_sku or same_ean:
+                continue
+
+            review.append({
+                "rule": "NAME_EXACT_NO_IDENTIFIER",
+                "left": left["source_key"],
+                "right": right["source_key"],
+                "left_sku": left["sku"],
+                "right_sku": right["sku"],
+                "left_ean": left["ean"],
+                "right_ean": right["ean"],
+                "left_name": left["name"],
+                "right_name": right["name"],
+                "name_similarity": 1.0,
+                "reason": (
+                    "exact same product name but "
+                    "no matching SKU or EAN"
+                ),
+            })
 
     #
     # Higher-confidence rules first.
