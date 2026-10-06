@@ -12,3 +12,18 @@ output/*
 !output/.gitkeep
 
 *.log
+
+# Raw binary assets stay on the consolidation server
+raw/**/Produktbilder/**
+raw/**/produktbilder/**
+
+# Binary product assets
+raw/**/*.jpg
+raw/**/*.jpeg
+raw/**/*.png
+raw/**/*.gif
+raw/**/*.webp
+raw/**/*.tif
+raw/**/*.tiff
+raw/**/*.zip
+raw/**/*.pdf
