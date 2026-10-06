@@ -1,0 +1,28 @@
+target_golden_id,merge_golden_id,reason
+G-IDB-0E6816A91D0C,G-INT-549170425415,Identbase and legacy exact SKU same HDP6600 clear film
+G-IDB-E88CDE749E98,G-INT-762E70C3A621,Identbase and legacy exact SKU same HDP6600 YMCK
+G-IDB-D56F5C0E3FBE,G-INT-3D18DAE1E829,Identbase and legacy exact SKU same HDP6600 YMCKK
+G-IDB-E11E0E024507,G-INT-F1F2A4594337,Identbase and legacy exact SKU same Zebra cleaning kit
+G-IDB-32B0741A6E34,G-INT-5AE7E332366A,Identbase and legacy exact SKU same Entrust Sigma DS1
+G-IDB-1886482AF31D,G-INT-C13CD263CC69,Identbase and legacy exact SKU same Fargo PolyGuard
+G-IDB-9ECF05387A56,G-INT-27EB42E4BEB7,Identbase and legacy exact SKU same DASCOM cleaning kit
+G-IDB-0BC710D643C4,G-INT-1EE18646812B,Identbase and legacy exact SKU same DESFire EV1 8K
+G-IDB-3EE584B8666E,G-INT-6906FE066432,Identbase and legacy exact SKU same DESFire EV2 4K
+G-IDB-D305FD05B509,G-INT-AA29264C4DA0,Identbase and legacy exact SKU same DESFire EV1 8K 70pF
+G-IDB-A24B7E4ACB59,G-INT-48A79ABD59A0,Identbase and legacy exact SKU same DESFire EV1 4K
+G-IDB-0AFC3D1D5810,G-INT-F8FCC1511A06,Identbase and legacy exact SKU same MIFARE Ultralight C
+G-IDB-E0039593BA98,G-INT-07CB0865E25B,Identbase and legacy exact SKU same MIFARE 1K 7-byte UID
+G-IDB-850FD3A6A528,G-INT-38CBA2836978,Identbase and legacy exact SKU same DESFire EV1 2K 70pF
+G-IDB-57524D420F1F,G-INT-871CAE736691,Same Elatec Secustos MU20 K product
+G-IDB-57524D420F1F,G-INT-5179D8569590,Same Elatec Secustos MU20 K product
+G-INT-307784657219,G-INT-3EFBE997FD52,Exact same BioBadge product
+G-INT-9A15C8647A66,G-INT-A81087E9BDDB,Exact same red Kartenjojo product
+G-INT-47DB731FD21A,G-INT-DD8F500A2707,Exact same white Kartenjojo product
+G-INT-A52CED280721,G-INT-4FA76BB5F49F,Exact same Magicard blue ribbon
+G-INT-3DECDA9C5228,G-INT-35C47B7EDB6B,Exact same Magicard gold ribbon
+G-INT-05759FA4F244,G-INT-6A684A10B0B4,Exact same Magicard green ribbon
+G-INT-2A6AF877669E,G-INT-6F1F7161FFA5,Exact same Magicard red ribbon
+G-INT-5ACDB581E1BC,G-INT-55C3D4D82208,Exact same Magicard silver ribbon
+G-INT-2A1458474C50,G-INT-5977B7F854F2,Exact same Magicard white ribbon
+G-INT-9185DC0C9184,G-INT-116C6F9C60AC,Exact same Elatec TWN4 Multitech PI product
+G-INT-B54F62853FF5,G-INT-B5939E1A0AB9,Exact same Zebra ZXP Series 9 product
